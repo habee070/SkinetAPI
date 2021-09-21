@@ -59,7 +59,7 @@ namespace SkinetAPI
 
             app.UseRouting();
             app.UseStaticFiles();
-            //eee
+            
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
