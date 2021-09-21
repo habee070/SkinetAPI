@@ -1,3 +1,4 @@
+using Core.Interfaces;
 using Infrastructure.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -8,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using SkinetAPI.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,6 +31,9 @@ namespace SkinetAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddScoped<IProductRepo,ProductRepo>();
+            services.AddScoped(typeof(IGenerateRepo<>),typeof(GenerateRepo<>));
+            services.AddAutoMapper(typeof(MappingProfiles));
             services.AddControllers();
             // add data form database
             services.AddDbContext<StoreContext>(x => x.UseSqlServer(_config.GetConnectionString("StoreConnection")));
@@ -53,6 +58,7 @@ namespace SkinetAPI
             app.UseHttpsRedirection();
 
             app.UseRouting();
+            app.UseStaticFiles();
 
             app.UseAuthorization();
 
